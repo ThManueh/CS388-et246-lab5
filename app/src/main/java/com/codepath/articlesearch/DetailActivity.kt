@@ -23,16 +23,19 @@ class DetailActivity : AppCompatActivity() {
         bylineTextView = findViewById(R.id.mediaByline)
         abstractTextView = findViewById(R.id.mediaAbstract)
 
-        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as Article
+        // Retrieve the DisplayArticle from the intent
+        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as? DisplayArticle
 
-        // Set title and abstract information for the article
-        titleTextView.text = article.headline?.main
-        bylineTextView.text = article.byline?.original
-        abstractTextView.text = article.abstract
+        // Set title, byline, and abstract information for the article
+        article?.let {
+            titleTextView.text = it.headline
+            bylineTextView.text = it.byline
+            abstractTextView.text = it.abstract
 
-        // Load the media image
-        Glide.with(this)
-            .load(article.mediaImageUrl)
-            .into(mediaImageView)
+            // Load the media image
+            Glide.with(this)
+                .load(it.mediaImageUrl)
+                .into(mediaImageView)
+        }
     }
 }
